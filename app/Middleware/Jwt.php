@@ -1,8 +1,6 @@
 <?php
 namespace app\Middleware;
 
-use FFI\Exception;
-
 class JWT {
     private $secretKey;
 
@@ -24,20 +22,18 @@ class JWT {
     public function decode($token) {
         $parts = explode('.', $token);
         if (count($parts) != 3) {
-            throw new Exception('Token structure is incorrect');
+            return 'Token structure is incorrect';
         }
         list($base64UrlHeader, $base64UrlPayload, $base64UrlSignature) = $parts;
-        $header = json_decode($this->base64UrlDecode($base64UrlHeader));
         $payload = json_decode($this->base64UrlDecode($base64UrlPayload));
         $signature = $this->base64UrlDecode($base64UrlSignature);
         $expectedSignature = hash_hmac('sha256', $base64UrlHeader . '.' . $base64UrlPayload, $this->secretKey, true);
         if (!hash_equals($expectedSignature, $signature)) {
-            throw new Exception('Token signature is invalid');
+            return 'Token signature is invalid';
         }
         if (time() > $payload->exp) {
-            throw new Exception('Token has expired');
+            return 'Token has expired';
         }
-        return $payload;
     }
 
     private function base64UrlEncode($data) {

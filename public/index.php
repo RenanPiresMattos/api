@@ -5,7 +5,7 @@
     
     require '../vendor/autoload.php';
 
-    $env = file('..env');
+    $env = file('../.env');
     foreach ($env as $env_value) {
         putenv($env_value);
     }

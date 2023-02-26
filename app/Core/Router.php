@@ -2,7 +2,7 @@
 namespace app\Core;
 
 use app\Middleware\JWT;
-use FFI\Exception;
+use Exception;
 
 class Router {
     private $routes = array();
@@ -41,7 +41,7 @@ class Router {
                         
                         if (!isset($headers['Authorization'])) {
                             header("HTTP/1.0 401");
-                            $array['mensagem'] = "Not authorized.";
+                            $array['response'] = "Token not sent.";
                             echo json_encode($array);
                             return;
                         } else {
@@ -49,6 +49,9 @@ class Router {
                             try {
                                 $jwt = new JWT(trim(getenv('TOKEN_KEY')));
                                 $decoded = $jwt->decode($token);
+                                if($decoded){
+                                   throw new Exception($decoded);
+                                }
                                 array_shift($matches);
                                 $callback = $data['callback'];
                                 $class = new $callback[0];
@@ -56,7 +59,7 @@ class Router {
                                 return;
                             } catch (Exception $e) {
                                 header("HTTP/1.0 401");
-                                $array['mensagem'] = "Not authorized.";
+                                $array['response'] = $e->getMessage();
                                 echo json_encode($array);
                                 return;
                             }
@@ -71,11 +74,11 @@ class Router {
                 }
             }
             header("HTTP/1.0 404");
-            $array['mensagem'] = "Not found.";
+            $array['response'] = "Not found.";
             echo json_encode($array);
         } else {
             header("HTTP/1.0 405");
-            $array['mensagem'] = "Method not allowed.";
+            $array['response'] = "Method not allowed.";
             echo json_encode($array);
         }
     }
