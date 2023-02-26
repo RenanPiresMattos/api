@@ -1,0 +1,15 @@
+{
+	"require:":{
+
+	},
+	"autoload":{
+		"psr-4":{
+			"app\\":"app/",
+			"routes\\":"routes/",
+			"config\\":"config/"
+		}
+	},
+	"require-dev": {
+		"symfony/var-dumper": "^6.2"
+	}
+}
