@@ -34,6 +34,7 @@ class JWT {
         if (time() > $payload->exp) {
             return 'Token has expired';
         }
+        return true;
     }
 
     private function base64UrlEncode($data) {
