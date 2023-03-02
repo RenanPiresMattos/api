@@ -18,9 +18,3 @@ Then we receive this parameter in the controller method:
     }
 
 
-If you want to work with requests, just place a parameter in the last position of the method
-
-    public function index($id, $request)
-    {
-    }
-
