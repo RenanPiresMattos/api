@@ -2,6 +2,7 @@
 namespace app\Core;
 
 use app\Middleware\JWT;
+use app\Core\Request;
 use Exception;
 
 class Router {
@@ -49,11 +50,12 @@ class Router {
                             try {
                                 $jwt = new JWT(trim(getenv('TOKEN_KEY')));
                                 $decoded = $jwt->decode($token);
-                                if($decoded){
+                                if($decoded != true){
                                    throw new Exception($decoded);
                                 }
                                 array_shift($matches);
                                 $callback = $data['callback'];
+                                array_push($matches, new Request()); 
                                 $class = new $callback[0];
                                 call_user_func_array([$class, $callback[1]], $matches);
                                 return;
@@ -66,7 +68,8 @@ class Router {
                         }
                     } else {
                         array_shift($matches);
-                        $callback = $data['callback'];
+                        $callback = $data['callback']; 
+                        array_push($matches, new Request()); 
                         $class = new $callback[0];
                         call_user_func_array([$class, $callback[1]], $matches);
                         return;
