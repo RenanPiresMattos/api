@@ -1,7 +1,4 @@
 {
-	"require:":{
-
-	},
 	"autoload":{
 		"psr-4":{
 			"app\\":"app/",
@@ -11,5 +8,8 @@
 	},
 	"require-dev": {
 		"symfony/var-dumper": "^6.2"
+	},
+	"require": {
+		"firebase/php-jwt": "^6.8"
 	}
 }

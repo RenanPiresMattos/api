@@ -1,15 +1,17 @@
 <?php
-    session_start();
 
-    header('Content-Type: application/json; charset=UTF-8');
-    
-    require '../vendor/autoload.php';
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+header('Content-Type: application/json; charset=UTF-8');
 
-    $env = file('../.env');
-    foreach ($env as $env_value) {
-        putenv($env_value);
-    }
+require '../vendor/autoload.php';
 
-    $routes = new routes\Routes();  
+$env = file('../.env');
+foreach ($env as $env_value) {
+    putenv($env_value);
+}
 
-    $routes->api();
+$routes = new routes\Routes();
+
+$routes->api();
